@@ -1,0 +1,279 @@
+
+raw
+Poison flower countdown · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Poison Flower — Sprint Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --bg: #0f0e0d;
+    --surface: #1a1815;
+    --border: rgba(255,255,255,0.08);
+    --accent: #c9a96e;
+    --text-primary: #f0ece4;
+    --text-secondary: rgba(240,236,228,0.45);
+    --text-muted: rgba(240,236,228,0.25);
+    --danger: #e07a5f;
+    --success: #81b29a;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+ 
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+ 
+  body { padding: 1.5rem; }
+ 
+  .widget {
+    width: 100%;
+    max-width: 560px;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+ 
+  .header {
+    padding: 1rem 1.25rem 0.875rem;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+ 
+  .project-name {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+ 
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 99px;
+    border: 0.5px solid var(--accent);
+    color: var(--accent);
+  }
+ 
+  .live-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--success);
+    margin-right: 5px;
+    vertical-align: middle;
+    animation: pulse 2s ease-in-out infinite;
+  }
+ 
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+ 
+  .day-section {
+    padding: 2rem 1.5rem 1.75rem;
+    border-bottom: 0.5px solid var(--border);
+    text-align: center;
+  }
+ 
+  .day-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+ 
+  .day-current {
+    font-family: var(--mono);
+    font-size: 72px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+  }
+ 
+  .day-current.urgent { color: var(--danger); }
+  .day-current.complete { color: var(--success); }
+ 
+  .day-separator {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin: 0 10px;
+    align-self: center;
+  }
+ 
+  .day-total {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+ 
+  .day-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+ 
+  .bar-section {
+    padding: 1rem 1.25rem 1.25rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+ 
+  .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+ 
+  .bar-label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-family: var(--mono);
+  }
+ 
+  .bar-pct {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+  }
+ 
+  .bar-track {
+    height: 3px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+ 
+  .bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+  }
+ 
+  .dates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+ 
+  .date-cell {
+    padding: 0.875rem 1.25rem;
+    border-right: 0.5px solid var(--border);
+  }
+ 
+  .date-cell:last-child { border-right: none; }
+ 
+  .date-lbl {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-bottom: 4px;
+  }
+ 
+  .date-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+ 
+  .date-val.highlight { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="widget">
+  <div class="header">
+    <div class="project-name">🌺 &nbsp;The Poison Flower</div>
+    <div class="status-pill"><span class="live-dot"></span>Sprint active</div>
+  </div>
+ 
+  <div class="day-section">
+    <div class="day-display">
+      <div class="day-current" id="day-num">1</div>
+      <div class="day-separator">of</div>
+      <div class="day-total">30</div>
+    </div>
+    <div class="day-label" id="day-label">Director Attachment Sprint — Day 1</div>
+  </div>
+ 
+  <div class="bar-section">
+    <div class="bar-meta">
+      <span class="bar-label">Sprint progress</span>
+      <span class="bar-pct" id="pct">0%</span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="bar" style="width: 0%"></div>
+    </div>
+  </div>
+ 
+  <div class="dates-row">
+    <div class="date-cell">
+      <div class="date-lbl">Start</div>
+      <div class="date-val">Jun 1, 2026</div>
+    </div>
+    <div class="date-cell">
+      <div class="date-lbl">Deadline</div>
+      <div class="date-val highlight">Jul 1, 2026</div>
+    </div>
+    <div class="date-cell">
+      <div class="date-lbl">Contractor</div>
+      <div class="date-val">The Ranch PS</div>
+    </div>
+  </div>
+</div>
+ 
+<script>
+  const START = new Date('2026-06-01T00:00:00');
+  const TOTAL_DAYS = 30;
+ 
+  function update() {
+    const now = new Date();
+    const msElapsed = now - START;
+    const dayNum = Math.min(TOTAL_DAYS, Math.max(1, Math.floor(msElapsed / 86400000) + 1));
+    const pct = Math.min(100, Math.max(0, Math.round((dayNum / TOTAL_DAYS) * 100)));
+ 
+    const el = document.getElementById('day-num');
+    el.textContent = dayNum;
+    el.className = 'day-current' + (dayNum >= TOTAL_DAYS ? ' complete' : dayNum >= 25 ? ' urgent' : '');
+ 
+    document.getElementById('day-label').textContent = dayNum >= TOTAL_DAYS
+      ? 'Director Attachment Sprint — Complete'
+      : 'Director Attachment Sprint — Day ' + dayNum;
+ 
+    document.getElementById('bar').style.width = pct + '%';
+    document.getElementById('pct').textContent = pct + '%';
+  }
+ 
+  update();
+</script>
+</body>
+</html>
