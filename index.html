@@ -3,163 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Poison Flower — Sprint Progress</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>The Poison Flower — Sprint</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0f0e0d;
-    --surface: #1a1815;
+    --accent: #8b6f47;
+    --bg: #1a1815;
     --border: rgba(255,255,255,0.08);
-    --accent: #c9a96e;
-    --text-primary: #f0ece4;
-    --text-secondary: rgba(240,236,228,0.45);
-    --text-muted: rgba(240,236,228,0.25);
+    --text: #f0ece4;
+    --muted: rgba(240,236,228,0.35);
     --danger: #e07a5f;
-    --success: #81b29a;
+    --green: #81b29a;
     --mono: 'DM Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
   }
 
   html, body {
     height: auto;
+    margin: 0;
+    padding: 0;
     background: var(--bg);
-    color: var(--text-primary);
-    font-family: var(--sans);
+    font-family: var(--mono);
+    color: var(--text);
   }
 
-  body { padding: 0; margin: 0; }
-
-  .widget {
+  .card {
     width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
     border: 0.5px solid var(--border);
-    border-radius: 0;
-    overflow: hidden;
-    background: var(--surface);
+    gap: 1.25rem;
   }
 
-  .header {
-    padding: 1rem 1.25rem 0.875rem;
-    border-bottom: 0.5px solid var(--border);
+  .top-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
   }
 
-  .project-name {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .status-pill {
-    font-family: var(--mono);
+  .title {
     font-size: 9px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 99px;
-    border: 0.5px solid var(--accent);
     color: var(--accent);
   }
 
-  .live-dot {
-    display: inline-block;
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .live {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--success);
-    margin-right: 5px;
-    vertical-align: middle;
-    animation: pulse 2s ease-in-out infinite;
+    background: var(--green);
+    animation: blink 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
-  @keyframes pulse {
+  @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+    50%       { opacity: 0.2; }
   }
 
-  .day-section {
-    padding: 2rem 1.5rem 1.75rem;
-    border-bottom: 0.5px solid var(--border);
-    text-align: center;
+  .center {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
   }
 
-  .day-display {
+  .day-row {
     display: flex;
     align-items: baseline;
-    justify-content: center;
-    line-height: 1;
-    margin-bottom: 0.5rem;
+    gap: 8px;
   }
 
-  .day-current {
-    font-family: var(--mono);
-    font-size: 72px;
+  .day-num {
+    font-size: 80px;
     font-weight: 500;
-    color: var(--text-primary);
-    letter-spacing: -0.03em;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--text);
   }
 
-  .day-current.urgent { color: var(--danger); }
-  .day-current.complete { color: var(--success); }
+  .day-num.urgent { color: var(--danger); }
+  .day-num.done   { color: var(--green); }
 
-  .day-separator {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--text-muted);
-    margin: 0 10px;
-    align-self: center;
+  .day-of {
+    font-size: 20px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
   }
 
-  .day-total {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 400;
-    color: var(--text-muted);
-  }
-
-  .day-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
+  .subheader {
+    font-size: 9px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-muted);
-    margin-top: 4px;
+    color: var(--muted);
   }
 
-  .bar-section {
-    padding: 1rem 1.25rem 1.25rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .bar-meta {
+  .bottom {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 8px;
-  }
-
-  .bar-label {
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    font-family: var(--mono);
-  }
-
-  .bar-pct {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
+    flex-direction: column;
+    gap: 0.6rem;
   }
 
   .bar-track {
-    height: 3px;
+    width: 100%;
+    height: 2px;
     background: rgba(255,255,255,0.07);
     border-radius: 99px;
     overflow: hidden;
@@ -171,101 +136,59 @@
     border-radius: 99px;
   }
 
-  .dates-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .date-cell {
-    padding: 0.875rem 1.25rem;
-    border-right: 0.5px solid var(--border);
-  }
-
-  .date-cell:last-child { border-right: none; }
-
-  .date-lbl {
+  .dates {
+    display: flex;
+    justify-content: space-between;
     font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-family: var(--mono);
-    margin-bottom: 4px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
   }
 
-  .date-val {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text-secondary);
-  }
-
-  .date-val.highlight { color: var(--accent); }
+  .dates span:last-child { color: var(--accent); }
 </style>
 </head>
 <body>
-<div class="widget">
-  <div class="header">
-    <div class="project-name">🌺 &nbsp;The Poison Flower</div>
-    <div class="status-pill"><span class="live-dot"></span>Sprint active</div>
+<div class="card">
+
+  <div class="top-row">
+    <div class="title">The Poison Flower</div>
+    <div class="status"><span class="live"></span>Sprint Active</div>
   </div>
 
-  <div class="day-section">
-    <div class="day-display">
-      <div class="day-current" id="day-num">1</div>
-      <div class="day-separator">of</div>
-      <div class="day-total">30</div>
+  <div class="center">
+    <div class="day-row">
+      <div class="day-num" id="num">--</div>
+      <div class="day-of">/ 30</div>
     </div>
-    <div class="day-label" id="day-label">Director Attachment Sprint — Day 1</div>
+    <div class="subheader">Director Attachment Sprint</div>
   </div>
 
-  <div class="bar-section">
-    <div class="bar-meta">
-      <span class="bar-label">Sprint progress</span>
-      <span class="bar-pct" id="pct">0%</span>
-    </div>
+  <div class="bottom">
     <div class="bar-track">
-      <div class="bar-fill" id="bar" style="width: 0%"></div>
+      <div class="bar-fill" id="bar" style="width:0%"></div>
+    </div>
+    <div class="dates">
+      <span>Jun 1, 2026</span>
+      <span>Jul 1, 2026</span>
     </div>
   </div>
 
-  <div class="dates-row">
-    <div class="date-cell">
-      <div class="date-lbl">Start</div>
-      <div class="date-val">Jun 1, 2026</div>
-    </div>
-    <div class="date-cell">
-      <div class="date-lbl">Deadline</div>
-      <div class="date-val highlight">Jul 1, 2026</div>
-    </div>
-    <div class="date-cell">
-      <div class="date-lbl">Contractor</div>
-      <div class="date-val">The Ranch PS</div>
-    </div>
-  </div>
 </div>
 
 <script>
-  const START = new Date('2026-06-01T00:00:00');
-  const TOTAL_DAYS = 30;
+  const START = new Date(2026, 5, 1);
+  const TOTAL = 30;
 
-  function update() {
-    const now = new Date();
-    const msElapsed = now - START;
-    const dayNum = Math.min(TOTAL_DAYS, Math.max(1, Math.floor(msElapsed / 86400000) + 1));
-    const pct = Math.min(100, Math.max(0, Math.round((dayNum / TOTAL_DAYS) * 100)));
+  const now  = new Date();
+  const day  = Math.min(TOTAL, Math.max(1, Math.floor((now - START) / 86400000) + 1));
+  const pct  = Math.round((day / TOTAL) * 100);
 
-    const el = document.getElementById('day-num');
-    el.textContent = dayNum;
-    el.className = 'day-current' + (dayNum >= TOTAL_DAYS ? ' complete' : dayNum >= 25 ? ' urgent' : '');
+  const el = document.getElementById('num');
+  el.textContent = day;
+  if (day >= TOTAL)   el.classList.add('done');
+  else if (day >= 25) el.classList.add('urgent');
 
-    document.getElementById('day-label').textContent = dayNum >= TOTAL_DAYS
-      ? 'Director Attachment Sprint — Complete'
-      : 'Director Attachment Sprint — Day ' + dayNum;
-
-    document.getElementById('bar').style.width = pct + '%';
-    document.getElementById('pct').textContent = pct + '%';
-  }
-
-  update();
+  document.getElementById('bar').style.width = pct + '%';
 </script>
 </body>
 </html>
